@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using UnityEngine;
 
 
@@ -10,5 +11,16 @@ public class Manager_Game : MonoBehaviour
         else Instance = this;
     }
 
+    [Header("Game Settings")]
+    public float maxVelocity = 2.5f;
+
+
+    [Header("References") ]
     public Controller_HUD controller_HUD;
+
+
+    public void SceneTransition(int index)
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(index);
+    }
 }

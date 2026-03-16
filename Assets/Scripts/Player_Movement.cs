@@ -26,6 +26,12 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
+    // Returns the current velocity magnitude of the player's Rigidbody
+    public float GetVelocity()
+    {
+        return rb.linearVelocity.magnitude;
+    }
+
     // Applies the main propulsion force when the space key is held down
     private void MainPropulsion()
     {
@@ -37,18 +43,30 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
-    // Applies rotational forces when the A or D keys are held down
+    // Applies rotational forces when the W or S keys are held down
     private void RotationPropulsion()
     {
         Vector3 force_final = force_rotation * transform.up * Time.deltaTime * 100;
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.W))
+        {
+            Vector3 force_position = transform.position + new Vector3(0, 0, -force_offset);
+            rb.AddForceAtPosition(force_final, force_position, ForceMode.Force);
+            FuelConsumption();
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            Vector3 force_position = transform.position + new Vector3(0, 0, force_offset);
+            rb.AddForceAtPosition(force_final, force_position, ForceMode.Force);
+            FuelConsumption();
+        }
+        if (Input.GetKey(KeyCode.A))
         {
             Vector3 force_position = transform.position + new Vector3(-force_offset, 0, 0);
             rb.AddForceAtPosition(force_final, force_position, ForceMode.Force);
             FuelConsumption();
         }
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.D))
         {
             Vector3 force_position = transform.position + new Vector3(force_offset, 0, 0);
             rb.AddForceAtPosition(force_final, force_position, ForceMode.Force);
@@ -61,5 +79,7 @@ public class Player_Movement : MonoBehaviour
     {
         fuel -= quantity * Time.deltaTime;
         Manager_Game.Instance.controller_HUD.UpdateFuel(fuel, max_fuel);
+
+        if (fuel <= 0) Manager_Game.Instance.SceneTransition(1);
     }
 }
