@@ -14,6 +14,8 @@ public class Map_CollisionVIctory : MonoBehaviour
     {
         float player_velocity = collision.gameObject.GetComponent<Player_Movement>().GetVelocity();
 
+
+        // Defeat conditions  
         if (player_velocity >= velocity_max)
         {
             Defeat();
