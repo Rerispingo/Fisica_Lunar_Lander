@@ -4,19 +4,20 @@ using System;
 
 public class Map_CollisionVIctory : MonoBehaviour
 {
-    private float velocity_max;
-
-    void Start()
-    {
-        velocity_max = Manager_Game.Instance.maxVelocity;
-    }
     private void OnCollisionEnter(Collision collision)
     {
-        float player_velocity = collision.gameObject.GetComponent<Player_Movement>().GetVelocity();
+        Player_Movement player_movement = collision.gameObject.GetComponent<Player_Movement>();
+        float player_velocity = player_movement.GetVelocity();
+        float player_rotation = player_movement.GetRotation();
 
 
         // Defeat conditions  
-        if (player_velocity >= velocity_max)
+        if (player_velocity >= Manager_Game.Instance.maxVelocity)
+        {
+            Defeat();
+            return;
+        }
+        if (player_rotation >= Manager_Game.Instance.maxRotation)
         {
             Defeat();
             return;
@@ -31,6 +32,7 @@ public class Map_CollisionVIctory : MonoBehaviour
 
     private IEnumerator _Victory()
     {
+        
         yield return new WaitForSeconds(1.5f);
         Manager_Game.Instance.SceneTransition(2);
     }

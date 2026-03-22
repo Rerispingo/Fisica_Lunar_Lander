@@ -6,6 +6,7 @@ public class Player_Movement : MonoBehaviour
     [SerializeField] private float force_up = 7f;
     [SerializeField] private float fuel = 25f;
     [SerializeField] private float max_fuel = 25f;
+    [SerializeField] private bool dificult_hard = false;
     
     private float force_offset = 1f;
     private Rigidbody rb;
@@ -23,13 +24,20 @@ public class Player_Movement : MonoBehaviour
         {
             RotationPropulsion();
             MainPropulsion();
-        }
+        }else Manager_Game.Instance.SceneTransition(3);
     }
 
     // Returns the current velocity magnitude of the player's Rigidbody
     public float GetVelocity()
     {
         return rb.linearVelocity.magnitude;
+    }
+
+    // Returns the current rotation of the player around the x-axis
+    public float GetRotation()
+    {  
+        if (transform.rotation.eulerAngles.x > 180) return transform.rotation.eulerAngles.x - 360;
+        else return transform.rotation.eulerAngles.x;
     }
 
     // Applies the main propulsion force when the space key is held down
@@ -40,6 +48,7 @@ public class Player_Movement : MonoBehaviour
             Vector3 force_final = force_up * transform.up * Time.deltaTime * 100;
             rb.AddForce(force_final, ForceMode.Force);
             FuelConsumption();
+            Manager_Game.Instance.Score = fuel * 10;
         }
     }
 
@@ -79,7 +88,5 @@ public class Player_Movement : MonoBehaviour
     {
         fuel -= quantity * Time.deltaTime;
         Manager_Game.Instance.controller_HUD.UpdateFuel(fuel, max_fuel);
-
-        if (fuel <= 0) Manager_Game.Instance.SceneTransition(1);
     }
 }

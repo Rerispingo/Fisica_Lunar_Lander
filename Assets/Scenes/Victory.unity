@@ -434,6 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f453e30314d5a04f9b07330069149fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Manager_Game
+  maxVelocity: 0
   controller_HUD: {fileID: 0}
 --- !u!4 &432413293
 Transform:
